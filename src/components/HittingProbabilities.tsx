@@ -9,7 +9,7 @@ export const HittingProbabilities = ({ width, envConfig }: {
 }) => {
   const [targetNumber, setTargetNumber] = useState(4);
   const data = [...Array(9)].map((_, i) => {
-    return calculateHitProbability({ width: 3, height: 4, sigma: 3 }, targetNumber, i);
+    return calculateHitProbability(envConfig, targetNumber, i);
   });
   const pMax = Math.max(...data);
 
@@ -39,17 +39,17 @@ export const HittingProbabilities = ({ width, envConfig }: {
                 y={-yScale.bandwidth() / 2}
                 width={xScale.bandwidth()}
                 height={yScale.bandwidth()}
-                fill={d3ScaleChromatic.interpolateBlues((d / pMax) * 0.8 + 0.2)}
+                fill={d3ScaleChromatic.interpolateTurbo(d)}
                 stroke={i === targetNumber ? 'red' : 'none'}
                 strokeWidth={i === targetNumber ? 2 : 0}
               />
               <text
                 x={0}
-                y={18}
+                y={12}
                 fill='white'
                 textAnchor='middle'
                 dominantBaseline='hunging'
-                fontSize='18px'
+                fontSize='12px'
               >
                 P={d.toFixed(3)}
               </text>
@@ -59,7 +59,7 @@ export const HittingProbabilities = ({ width, envConfig }: {
                 fill='white'
                 textAnchor='middle'
                 dominantBaseline='baseline'
-                fontSize='36px'
+                fontSize='24px'
               >
                 {i}
               </text>

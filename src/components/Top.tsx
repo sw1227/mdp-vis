@@ -1,18 +1,77 @@
-import { FC } from 'react';
-import { VStack } from '@chakra-ui/react';
+import { FC, useState } from 'react';
+import {
+  VStack,
+  HStack,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderMark,
+  Card,
+  CardHeader,
+  CardBody,
+  Heading,
+} from '@chakra-ui/react';
 import { HittingProbabilities } from './HittingProbabilities';
 import { EnvironmentConfig } from '../logics/hittingEnvironment';
 
 export const Top: FC = () => {
-  const ENV_CONFIG: EnvironmentConfig = {
+  const [envConfig, setEnvConfig] = useState<EnvironmentConfig>({
     width: 3,
     height: 4,
     sigma: 3,
-  };
+  });
 
   return (
-    <VStack>
-      <HittingProbabilities width={500} envConfig={ENV_CONFIG} />
-    </VStack>
+    <Card marginTop={12}>
+      <CardHeader>
+        <Heading size='md'>Hitting Probabilities</Heading>
+      </CardHeader>
+      <CardBody>
+        <VStack w='100%' spacing={6}>
+          <HStack w='100%'>
+            <p>Width: </p>
+            <ConfigValueSlider value={envConfig.width} onChangeValue={width => setEnvConfig({ ...envConfig, width })} />
+          </HStack>
+          <HStack w='100%'>
+            <p>Height: </p>
+            <ConfigValueSlider value={envConfig.height} onChangeValue={height => setEnvConfig({ ...envConfig, height })} />
+          </HStack>
+          <HStack w='100%'>
+            <p>Stddev: </p>
+            <ConfigValueSlider value={envConfig.sigma} onChangeValue={sigma => setEnvConfig({ ...envConfig, sigma })} />
+          </HStack>
+          <HittingProbabilities width={60 * envConfig.width} envConfig={envConfig} />
+        </VStack>
+      </CardBody>
+    </Card>
+  );
+};
+
+const ConfigValueSlider = ({ value, onChangeValue }: { value: number, onChangeValue: (val: number) => void }) => {
+  return (
+    <Slider
+      min={1}
+      max={10}
+      step={1}
+      onChange={onChangeValue}
+      value={value}
+    >
+      <SliderMark
+        value={value}
+        textAlign='center'
+        bg='blue.500'
+        color='white'
+        mt='-10'
+        ml='-4'
+        w='10'
+      >
+        {value}
+      </SliderMark>
+      <SliderTrack>
+        <SliderFilledTrack />
+      </SliderTrack>
+      <SliderThumb />
+    </Slider>
   );
 };
