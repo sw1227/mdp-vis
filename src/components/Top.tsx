@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { VStack } from '@chakra-ui/react';
 import { HittingProbabilities } from './HittingProbabilities';
 import { EnvironmentConfig } from '../logics/hittingEnvironment';
 
@@ -10,8 +11,8 @@ export const Top: FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <VStack>
       <HittingProbabilities width={500} envConfig={ENV_CONFIG} />
-    </div>
+    </VStack>
   );
 };

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import * as d3Scale from 'd3-scale';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import { calculateHitProbability, EnvironmentConfig } from '../logics/hittingEnvironment';
@@ -6,10 +7,11 @@ export const HittingProbabilities = ({ width, envConfig }: {
   width: number,
   envConfig: EnvironmentConfig,
 }) => {
-  const targetNumber = 5;
+  const [targetNumber, setTargetNumber] = useState(4);
   const data = [...Array(9)].map((_, i) => {
     return calculateHitProbability({ width: 3, height: 4, sigma: 3 }, targetNumber, i);
   });
+  const pMax = Math.max(...data);
 
   const height = width * (envConfig.height / envConfig.width);
 
@@ -28,6 +30,8 @@ export const HittingProbabilities = ({ width, envConfig }: {
                 ${(xScale(x) ?? 0) + (xScale.bandwidth() / 2)},
                 ${(yScale(y) ?? 0) + (yScale.bandwidth() / 2)}
               )`}
+              onClick={() => setTargetNumber(i)}
+              style={{ cursor: 'pointer' }}
             >
               <rect
                 key={i}
@@ -35,7 +39,7 @@ export const HittingProbabilities = ({ width, envConfig }: {
                 y={-yScale.bandwidth() / 2}
                 width={xScale.bandwidth()}
                 height={yScale.bandwidth()}
-                fill={d3ScaleChromatic.interpolateViridis(d * 4)}
+                fill={d3ScaleChromatic.interpolateBlues((d / pMax) * 0.8 + 0.2)}
                 stroke={i === targetNumber ? 'red' : 'none'}
                 strokeWidth={i === targetNumber ? 2 : 0}
               />
