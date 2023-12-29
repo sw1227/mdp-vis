@@ -11,7 +11,6 @@ export const HittingProbabilities = ({ width, envConfig }: {
   const data = [...Array(9)].map((_, i) => {
     return calculateHitProbability(envConfig, targetNumber, i);
   });
-  const pMax = Math.max(...data);
 
   const height = width * (envConfig.height / envConfig.width);
 
